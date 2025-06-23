@@ -7,7 +7,7 @@ import subprocess
 st.set_page_config('Encuentra tu Pelicula!', layout='wide')
 
 similarity_path = "modelo/similarity.pkl"
-similarity_id = "14Bvn23VAIY5hYvBiMBlvMbW6aXCvnulg"
+similarity_id = "1PByfAluVuS1GPYCnTYp_NP_DLiLhWD5C"
 
 if not os.path.exists(similarity_path):
     os.makedirs("modelo", exist_ok=True)
