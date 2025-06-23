@@ -2,14 +2,25 @@ import streamlit as st
 import pickle
 import pandas as pd
 import numpy as np
+import gdown
+import os
 
 st.set_page_config('Encuentra tu Pelicula!', layout='wide')
 
 @st.cache_data
-def cargar_datos():
+def cargar_datos():  
+    similarity_path = "modelo/similarity.pkl"
+    similarity_id = "14Bvn23VAIY5hYvBiMBlvMbW6aXCvnulg"
+
+    if not os.path.exists(similarity_path):
+        url = f"https://drive.google.com/uc?id={similarity_id}"
+        os.makedirs("modelo", exist_ok=True)
+        gdown.download(url, similarity_path, quiet=False)
+
     df = pickle.load(open("modelo/movie_list.pkl", "rb"))
     similarity = pickle.load(open("modelo/similarity.pkl", "rb"))
     kmeans_model = pickle.load(open("modelo/kmeans_model.pkl", "rb"))
+
     return df, similarity, kmeans_model
 
 df, similarity, kmeans_model = cargar_datos()
