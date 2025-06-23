@@ -1,9 +1,8 @@
 import streamlit as st
 import pickle
 import pandas as pd
-import numpy as np
-import gdown
 import os
+import subprocess
 
 st.set_page_config('Encuentra tu Pelicula!', layout='wide')
 
@@ -11,9 +10,9 @@ similarity_path = "modelo/similarity.pkl"
 similarity_id = "14Bvn23VAIY5hYvBiMBlvMbW6aXCvnulg"
 
 if not os.path.exists(similarity_path):
-    url = f"https://drive.google.com/uc?id={similarity_id}"
     os.makedirs("modelo", exist_ok=True)
-    gdown.download(url, similarity_path, quiet=False)
+    url = f"https://drive.google.com/uc?id={similarity_id}"
+    subprocess.run(["gdown", url, "-O", similarity_path], check=True)
 
 @st.cache_data
 def cargar_datos():  
