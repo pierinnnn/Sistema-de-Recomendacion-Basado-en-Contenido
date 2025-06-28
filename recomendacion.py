@@ -67,6 +67,16 @@ titulo_seleccionado = st.selectbox(
     options=df["title"].tolist()
 )
 
+#Agregar una descripción de la película seleccionada
+pelicula_seleccionada = df[df["title"] == titulo_seleccionado].iloc[0]
+st.subheader(f"{pelicula_seleccionada['overview']}")
+# Mostrar el poster de la película seleccionada
+st.image(obtener_poster(pelicula_seleccionada["poster_path"]), caption=titulo_seleccionado, width=300)
+# Mostrar género de la película seleccionada
+st.write(f"**Géneros:** {''.join(pelicula_seleccionada['genres'])}")
+# Cluster de la película seleccionada
+st.write(f"**Cluster:** {pelicula_seleccionada['cluster']}")
+
 if st.button("Recomendar"):
     resultados = recomendar_clustered(titulo_seleccionado, df, similarity, kmeans_model)
 
@@ -76,5 +86,14 @@ if st.button("Recomendar"):
         for i, pelicula in enumerate(resultados):
             with cols[i]:
                 st.image(pelicula["poster"], caption=pelicula["title"], use_container_width=True)
+                # Mostrar el género de la película recomendada
+                genero = df[df["title"] == pelicula["title"]]["genres"].values[0]
+                st.write(f"**Géneros:** {''.join(genero)}")
+                # Mostrar la descripción de la película recomendada
+                descripcion = df[df["title"] == pelicula["title"]]["overview"].values[0]
+                st.write(f"**Descripción:** {descripcion[:150]}...")  # Mostrar solo los primeros 150 caracteres
+                # Mostrar el cluster de la película recomendada
+                cluster = df[df["title"] == pelicula["title"]]["cluster"].values[0]
+                st.write(f"**Cluster:** {cluster}")
     else:
         st.error("❌ No se encontró la película en el dataset.")
